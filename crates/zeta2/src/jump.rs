@@ -260,15 +260,15 @@ pub async fn predict_jump(
 
     request_body.request.tools.clear();
     request_body.request.messages.extend([
-            choice.message,
-            open_ai::RequestMessage::Tool {
-                content: MessageContent::Plain(combined_results),
-                tool_call_id,
-            },
-            open_ai::RequestMessage::User {
-                content: MessageContent::Plain(format!("{JUMP_INSTRUCTIONS}\nAssume that no more edits are required in the current file ({}). Only suggest jumping to other files.", active_full_path.display())),
-            },
-        ]);
+        choice.message,
+        open_ai::RequestMessage::Tool {
+            content: MessageContent::Plain(combined_results),
+            tool_call_id,
+        },
+        open_ai::RequestMessage::User {
+            content: MessageContent::Plain("{JUMP_INSTRUCTIONS}".into()),
+        },
+    ]);
 
     let request = Request::builder()
         .method(Method::POST)
